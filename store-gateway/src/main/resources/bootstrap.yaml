@@ -1,0 +1,11 @@
+server:
+  port: 3000  #前端默认访问的端口号
+  servlet:
+    context-path: /  #前端默认访问的根路径
+
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    nacos:
+      server-addr: 8.134.159.65:8848

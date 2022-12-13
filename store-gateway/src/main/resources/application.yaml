@@ -1,0 +1,29 @@
+#配置网关
+spring:
+  cloud:
+    gateway:
+      routes:
+        #用户服务
+        - id: user-server            # 路由id，不重复即可
+          uri: lb://user-server      # 路由到某服务
+          predicates:
+            - Path=/user/**          # 断言规则
+        #静态资源服务
+        - id: static-server
+          uri: lb://static-server
+          predicates:
+            - Path=/public/**
+        #轮播服务
+        - id: carousel-server
+          uri: lb://carousel-server
+          predicates:
+            - Path=/carousel/**
+        #商品服务
+        - id: product-server
+          uri: lb://product-server
+          predicates:
+            - Path=/product/**
+#        - id: product-server
+#          uri: lb://product-server
+#          perdicates:
+#            - Path=/product/**

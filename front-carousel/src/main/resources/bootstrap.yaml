@@ -1,0 +1,9 @@
+server:
+  port: 3003
+
+spring:
+  application:
+    name: carousel-server
+  cloud:
+    nacos:
+      server-addr: 8.134.159.65:8848
