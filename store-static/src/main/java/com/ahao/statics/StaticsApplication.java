@@ -4,10 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @Description: StaticsApplication
+ * @Description: 静态资源管理器
  * @Author: ahao
  * @Date: 2022/12/5 19:19
  **/
+
 @SpringBootApplication
 public class StaticsApplication {
 

@@ -1,7 +1,9 @@
 package com.ahao.category.service;
 
+import com.ahao.param.ProductHotParam;
 import com.ahao.pojo.Category;
-import com.ahao.utils.R;
+
+import java.util.List;
 
 /**
  * @Description: 分类名称接口
@@ -11,4 +13,8 @@ import com.ahao.utils.R;
 public interface CategoryService {
 
     Category byName(String categoryName);
+
+    List<Category> byNameList(ProductHotParam productHotParam);
+
+    List<Category> list();
 }

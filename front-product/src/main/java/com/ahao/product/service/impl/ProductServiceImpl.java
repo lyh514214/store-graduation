@@ -1,6 +1,8 @@
 package com.ahao.product.service.impl;
 
 import com.ahao.clients.CategoryClient;
+import com.ahao.param.ProductHotParam;
+import com.ahao.pojo.Category;
 import com.ahao.pojo.Product;
 import com.ahao.product.mapper.ProductMapper;
 import com.ahao.product.service.ProductService;
@@ -30,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     /**
-     * @Description: 返回每个总类销量最好的7个产品
+     * @Description: 首页类别接口
      * @param categoryName 类别名称
      * @return 商品信息集合
     **/
@@ -43,17 +45,56 @@ public class ProductServiceImpl implements ProductService {
         }
         //从别的服务获取的对象通过linkedHashmap返回，我们需要进一步处理
         LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) r.getData();
-        log.info("从front-category服务获取的数据==>{}",map);
         Integer categoryId = (Integer) map.get("categoryId");
-        log.info("categoryName分类名称==>{}",map.get("categoryName"));
         IPage<Product> page = new Page<>(1, 7);
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("category_id", categoryId);
         queryWrapper.orderByDesc("product_sales");
         IPage<Product> productIPage = productMapper.selectPage(page, queryWrapper);
         List<Product> productList = productIPage.getRecords();
-        log.info("ProductServiceImpl.promo业务结束，结果:{}", productList);
+        log.info("ProductServiceImpl.promo业务结束，结果:{}", "成功");
         return R.ok("查询数据成功", productList);
+    }
+
+    /**
+     * @Description: 首页热门接口
+    **/
+    @Override
+    public R getProListByCateIds(ProductHotParam productHotParam) {
+        R r = categoryClient.byNameList(productHotParam);
+        if (r.getCode().equals(R.FAIL_CODE)){
+            return r;
+        }
+        if (r.getData()==null){
+            return r;
+        }
+        ArrayList<Integer> ids = new ArrayList<>();
+        ArrayList<LinkedHashMap<String,Object>> map = (ArrayList<LinkedHashMap<String,Object>>) r.getData();
+        for (LinkedHashMap<String,Object> linkedHashMap : map){
+            ids.add((Integer) linkedHashMap.get("categoryId"));
+        }
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("category_id",ids);
+        queryWrapper.orderByDesc("product_sales");
+        IPage<Product> page = new Page<>(1,7);
+        IPage<Product> productIPage = productMapper.selectPage(page,queryWrapper);
+        List<Product> records = productIPage.getRecords();
+        long total = productIPage.getTotal();
+        if (!records.isEmpty()){
+            log.info("hots业务完成，热门商品查询结果为:{}条",total);
+            return R.ok("热门商品查询成功",records,total);
+        }
+        return R.fail("没有热门商品数据");
+
+    }
+
+    /**
+     * @Description: 类别信息接口
+    **/
+    @Override
+    public R getCateList() {
+        log.info("clist业务结束，结果:{}","成功");
+        return categoryClient.list();
     }
 
 

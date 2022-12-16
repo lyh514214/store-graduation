@@ -1,5 +1,6 @@
 package com.ahao.product.service;
 
+import com.ahao.param.ProductHotParam;
 import com.ahao.utils.R;
 
 /**
@@ -10,4 +11,8 @@ import com.ahao.utils.R;
 public interface ProductService {
 
     R getProListByCateID(String categoryName);
+
+    R getProListByCateIds(ProductHotParam productHotParam);
+
+    R getCateList();
 }
