@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,9 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class R {
+public class R implements Serializable {
+
+    public static final Long SerialVersionUID = 1L;
 
     /**
      * 通用成功状态码
@@ -37,7 +40,7 @@ public class R {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object data;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Long   total;
+    private Long total;
 
 
     /**

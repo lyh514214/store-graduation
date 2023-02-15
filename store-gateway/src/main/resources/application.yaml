@@ -23,7 +23,18 @@ spring:
           uri: lb://product-server
           predicates:
             - Path=/product/**
-#        - id: product-server
-#          uri: lb://product-server
-#          perdicates:
-#            - Path=/product/**
+        #搜索服务
+        - id: search-server
+          uri: lb://search-server
+          predicates:
+            - Path=/search/**
+        #收藏服务
+        - id: collect-server
+          uri: lb://collect-server
+          predicates:
+            - Path=/collect/**
+        #购物车服务
+        - id: cart-server
+          uri: lb://cart-server
+          predicates:
+            - Path=/cart/**

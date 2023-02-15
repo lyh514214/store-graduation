@@ -3,6 +3,7 @@ package com.ahao.carousel;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
 /**
  * @Description: 轮播图启动类
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan(basePackages = "com.ahao.carousel.mapper")
+@EnableCaching
 public class CarouselApplication {
 
     public static void main(String[] args) {

@@ -1,7 +1,6 @@
 package com.ahao.clients;
 
 import com.ahao.param.ProductHotParam;
-import com.ahao.pojo.Category;
 import com.ahao.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
