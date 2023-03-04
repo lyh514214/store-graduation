@@ -1,9 +1,14 @@
 package com.ahao.user.service;
 
+import com.ahao.param.PageParam;
 import com.ahao.param.UserCheckParam;
+import com.ahao.param.UserIdParam;
 import com.ahao.param.UserLoginParam;
 import com.ahao.pojo.User;
 import com.ahao.utils.R;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import java.util.List;
 
 /**
  * @Description: 用户业务实现接口
@@ -32,5 +37,16 @@ public interface UserService {
      * @return com.ahao.utils.R + 用户id、账号
     **/
     R login(UserLoginParam userLoginParam);
+
+    /**
+     * @Description: 后台管理模块调用用户模块
+    **/
+    R adminGetUsersByPage(PageParam pageParam);
+
+    R adminSaveUser(User user);
+
+    R adminRemoveUser(UserIdParam userIdParam);
+
+    R updateUserByAdmin(User user);
 }
 

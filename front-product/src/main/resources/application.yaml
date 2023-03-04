@@ -5,7 +5,7 @@ spring:
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
   profiles:
-    active: cache  #激活store-common模块的缓存配置
+    active: cache,mq  #激活store-common模块的缓存配置
 
 mybatis-plus:
   type-aliases-package: com.ahao.pojo

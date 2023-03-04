@@ -2,6 +2,7 @@ package com.ahao.user.controller;
 
 import com.ahao.param.AddressListParam;
 import com.ahao.param.AddressRemoveParam;
+import com.ahao.param.AddressSaveParam;
 import com.ahao.pojo.Address;
 import com.ahao.user.service.AddressService;
 import com.ahao.utils.R;
@@ -42,16 +43,16 @@ public class AddressController {
 
     /**
      * @Description: 保存地址
-     * @param address 链接、电话、地址、用户id
+     * @param addressSaveParam 链接、电话、地址、用户id
      * @param result 参数校验
      * @return com.ahao.utils.R + 用户地址信息
     **/
     @PostMapping("save")
-    public R addressSave(@RequestBody @Validated Address address, BindingResult result){
+    public R addressSave(@RequestBody @Validated AddressSaveParam addressSaveParam, BindingResult result){
         if (result.hasErrors()){
             return R.fail("输入参数有误，请检查后重新输入");
         }
-        return addressService.save(address);
+        return addressService.save(addressSaveParam);
     }
 
     @PostMapping("remove")

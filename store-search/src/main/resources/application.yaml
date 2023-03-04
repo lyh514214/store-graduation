@@ -1,0 +1,14 @@
+ribbon:
+  eager-load:
+    enabled: true
+    clients:
+      - search-server
+feign:
+  httpclient:
+    enabled: true
+    max-connections-per-route: 50
+    max-connections: 200
+
+spring:
+  profiles:
+    active: mq  #激活

@@ -1,17 +1,18 @@
 package com.ahao.user.controller;
 
+import com.ahao.param.PageParam;
 import com.ahao.param.UserCheckParam;
 import com.ahao.param.UserLoginParam;
 import com.ahao.pojo.User;
 import com.ahao.user.service.UserService;
 import com.ahao.utils.R;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Description 用户控制器
@@ -70,6 +71,5 @@ public class UserController {
         }
         return userService.login(userLoginParam);
     }
-
 
 }

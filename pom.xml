@@ -18,6 +18,8 @@
         <module>store-search</module>
         <module>front-collect</module>
         <module>front-cart</module>
+        <module>front-order</module>
+        <module>store-admin</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: admin-server
+  cloud:
+    nacos:
+      server-addr: 8.134.159.65
+server:
+  port: 3011

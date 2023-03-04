@@ -1,7 +1,9 @@
 package com.ahao.user.service.impl;
 
 import com.ahao.constants.UserConstants;
+import com.ahao.param.PageParam;
 import com.ahao.param.UserCheckParam;
+import com.ahao.param.UserIdParam;
 import com.ahao.param.UserLoginParam;
 import com.ahao.pojo.User;
 import com.ahao.user.mapper.UserMapper;
@@ -9,9 +11,13 @@ import com.ahao.user.service.UserService;
 import com.ahao.utils.MD5Util;
 import com.ahao.utils.R;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @Description: 用户业务实现类
@@ -100,5 +106,68 @@ public class UserServiceImpl implements UserService {
         log.info("UserServiceImpl.login业务结束，结果为:{}","登录成功！");
         return R.ok("登录成功！",user);
     }
+
+    /**
+     * @Description: 后台管理模块调用用户模块  用户列表分页查询
+     **/
+    @Override
+    public R adminGetUsersByPage(PageParam pageParam) {
+        int currentPage = pageParam.getCurrentPage();
+        int pageSize = pageParam.getPageSize();
+        IPage<User> page = new Page<>(currentPage,pageSize);
+        page = userMapper.selectPage(page, null);
+        List<User> userList = page.getRecords();
+        long total = page.getTotal();
+        return R.ok("用户列表查询成功！",userList,total);
+    }
+
+    /**
+     * @Description: 后台管理模块调用用户模块   用户添加
+    **/
+    @Override
+    public R adminSaveUser(User user) {
+        int insert = userMapper.insert(user);
+        if (insert == 1){
+            return R.ok("保存成功！");
+        }
+        return R.fail("保存失败！");
+    }
+
+    /**
+     * @Description: 后台管理模块调用用户模块   用户删除
+    **/
+    @Override
+    public R adminRemoveUser(UserIdParam userIdParam) {
+        int i = userMapper.deleteById(userIdParam);
+        if (i > 0){
+            return R.ok("删除成功！");
+        }
+        return R.fail("删除失败！");
+    }
+
+    /**
+     * @Description: 后台管理模块调用用户模块  用户修改
+    **/
+    @Override
+    public R updateUserByAdmin(User user) {
+        //因为前端传来的是加密后的密码，我们先判断是否和数据库里的密码相同
+        //相同：  用户没改密码   user.password不用加密处理
+        //不相同：   用户改过密码   传来的密码需要加密处理
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",user.getUserId());
+        queryWrapper.eq("user_password",user.getPassword());
+        Long count = userMapper.selectCount(queryWrapper);
+        if (count == 0){
+            user.setPassword(MD5Util.encode(user.getPassword()+UserConstants.USER_SLAT));
+        }
+
+        int i = userMapper.updateById(user);
+
+        if (i == 0){
+            return R.fail("修改失败！");
+        }
+        return R.ok("修改成功！");
+    }
+
 
 }

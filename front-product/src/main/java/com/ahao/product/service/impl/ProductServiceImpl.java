@@ -6,21 +6,25 @@ import com.ahao.param.ProductHotParam;
 import com.ahao.param.ProductIdsParam;
 import com.ahao.param.ProductSearchParam;
 import com.ahao.param.RealProductIdsParam;
+import com.ahao.pojo.Order;
 import com.ahao.pojo.Product;
 import com.ahao.pojo.ProductPicture;
 import com.ahao.product.mapper.PictureMapper;
 import com.ahao.product.mapper.ProductMapper;
 import com.ahao.product.service.ProductService;
+import com.ahao.to.OrderToProduct;
 import com.ahao.utils.R;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 商品业务实现类
@@ -29,7 +33,7 @@ import java.util.*;
  **/
 @Service
 @Slf4j
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
 
     @Autowired
     private CategoryClient categoryClient;
@@ -42,8 +46,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private PictureMapper pictureMapper;
-
-
 
     /**
      * @Description: 首页类别商品接口
@@ -186,9 +188,34 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> someList(RealProductIdsParam realProductIdsParam) {
         List<Integer> productIds = realProductIdsParam.getProductIds();
-        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("product_id",productIds);
-        return productMapper.selectList(queryWrapper);
+        return productMapper.selectBatchIds(productIds);
+    }
+
+    /**
+     * @Description: 订单服务 -mq-> 商品库存减少；销量增加
+    **/
+    @Override
+    public void subNumber(List<OrderToProduct> orderToProducts) {
+
+        // 将集合装换为map  productId orderToProduct
+        Map<Integer, OrderToProduct> map = orderToProducts.stream().collect(Collectors.toMap(OrderToProduct::getProductId, v -> v));
+        //获取商品的id集合
+        Set<Integer> keySet = map.keySet();
+        //查询集合对应的商品信息
+        List<Product> productList = productMapper.selectBatchIds(keySet);
+        //修改商品信息
+        for (Product product : productList) {
+            Integer num = map.get(product.getProductId()).getNum();
+            product.setProductNum(product.getProductNum()-num);    //库存
+            product.setProductSales(product.getProductSales()+num);   //销量
+        }
+        //批量插入
+        boolean b = updateBatchById(productList);
+        if (b){
+            log.info("商品库存修改成功！");
+        }
+        log.info("商品库存修改失败！");
+
     }
 
 }

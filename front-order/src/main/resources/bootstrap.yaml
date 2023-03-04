@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    nacos:
+      server-addr: 8.134.159.65:8848
+  application:
+    name: order-server
+
+server:
+  port: 3010

@@ -38,3 +38,14 @@ spring:
           uri: lb://cart-server
           predicates:
             - Path=/cart/**
+        #订单服务
+        - id: order-server
+          uri: lb://order-server
+          predicates:
+            - Path=/order/**
+        #后台管理
+        - id: admin-server
+          uri: lb://admin-server
+          predicates:
+            - Path=/admin/**
+
