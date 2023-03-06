@@ -1,6 +1,7 @@
 package com.ahao.order.service;
 
 import com.ahao.param.OrderParam;
+import com.ahao.param.PageParam;
 import com.ahao.pojo.Order;
 import com.ahao.utils.R;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -15,4 +16,6 @@ public interface OrderService extends IService<Order> {
     R save(OrderParam orderParam);
 
     R getOrderList(OrderParam orderParam);
+
+    R adminGetOrderList(PageParam pageParam);
 }

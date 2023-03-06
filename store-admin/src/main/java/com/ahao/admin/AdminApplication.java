@@ -1,5 +1,8 @@
 package com.ahao.admin;
 
+import com.ahao.clients.CategoryClient;
+import com.ahao.clients.OrderClient;
+import com.ahao.clients.ProductClient;
 import com.ahao.clients.UserClient;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
@@ -19,7 +22,8 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @MapperScan(basePackages = "com.ahao.admin.mapper")
-@EnableFeignClients(clients = {UserClient.class})
+@EnableFeignClients(clients = {UserClient.class, CategoryClient.class,
+        ProductClient.class, OrderClient.class})
 @EnableCaching
 public class AdminApplication {
 

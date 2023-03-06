@@ -16,4 +16,6 @@ public interface SearchClient {
 
     @PostMapping("search/product")
     R searchProduct(@RequestBody ProductSearchParam productSearchParam);
+
+
 }

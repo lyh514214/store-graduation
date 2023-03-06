@@ -36,18 +36,18 @@ public class RabbitMQListener {
                     @QueueBinding(
                             value = @Queue(name = "insert.queue"),
                             exchange = @Exchange("topic.ex"),
-                            key = "product.insert"
+                            key = "insert.product"
                     )
             }
     )
     public void insert(Product product) throws IOException {
-        IndexRequest indexRequest = new IndexRequest().id(product.getProductId().toString());
+        IndexRequest indexRequest = new IndexRequest("product").id(product.getProductId().toString());
         ProductDoc productDoc = new ProductDoc(product);
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(productDoc);
-
         indexRequest.source(json, XContentType.JSON);
         restHighLevelClient.index(indexRequest, RequestOptions.DEFAULT);
+
     }
 
     /**

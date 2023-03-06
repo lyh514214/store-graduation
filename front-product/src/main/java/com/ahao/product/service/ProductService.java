@@ -1,9 +1,6 @@
 package com.ahao.product.service;
 
-import com.ahao.param.ProductHotParam;
-import com.ahao.param.ProductIdsParam;
-import com.ahao.param.ProductSearchParam;
-import com.ahao.param.RealProductIdsParam;
+import com.ahao.param.*;
 import com.ahao.pojo.Product;
 import com.ahao.to.OrderToProduct;
 import com.ahao.utils.R;
@@ -39,4 +36,9 @@ public interface ProductService extends IService<Product> {
 
     void subNumber(List<OrderToProduct> orderToProducts);
 
+    R saveProductByAdmin(AdminSaveProductParam adminSaveProductParam);
+
+    R removeProductByAdmin(Integer productId);
+
+    R updateProductByAdmin(Product product);
 }

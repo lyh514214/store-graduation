@@ -4,11 +4,13 @@ import com.ahao.clients.ProductClient;
 import com.ahao.order.mapper.OrderMapper;
 import com.ahao.order.service.OrderService;
 import com.ahao.param.OrderParam;
+import com.ahao.param.PageParam;
 import com.ahao.param.RealProductIdsParam;
 import com.ahao.pojo.Order;
 import com.ahao.pojo.Product;
 import com.ahao.to.OrderToProduct;
 import com.ahao.utils.R;
+import com.ahao.vo.AdminOrderVo;
 import com.ahao.vo.CartVo;
 import com.ahao.vo.OrderVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -33,6 +35,9 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
+
+    @Autowired
+    private OrderMapper orderMapper;
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -133,6 +138,23 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         log.info("订单列表加载成功!");
         return R.ok(result);
+    }
+
+    /**
+     * @Description: 后台管理调用 订单管理 查询订单列表
+    **/
+    @Override
+    public R adminGetOrderList(PageParam pageParam) {
+
+        int offset = (pageParam.getCurrentPage()-1)*pageParam.getPageSize();
+        int number = pageParam.getPageSize();
+
+        //查询数量
+        Long total = orderMapper.selectCount(null);
+        //自定义查询
+        List<AdminOrderVo> adminOrderVoList = orderMapper.selectAdminOrders(offset,number);
+
+        return R.ok("订单信息查询成功！",adminOrderVoList,total);
     }
 
 }

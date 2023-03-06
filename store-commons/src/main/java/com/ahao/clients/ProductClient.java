@@ -1,8 +1,11 @@
 package com.ahao.clients;
 
+import com.ahao.param.AdminSaveProductParam;
 import com.ahao.param.ProductIdParam;
+import com.ahao.param.ProductSearchParam;
 import com.ahao.param.RealProductIdsParam;
 import com.ahao.pojo.Product;
+import com.ahao.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,4 +53,27 @@ public interface ProductClient {
     @PostMapping("product/order/list")
     public List<Product> orderGetProducts(@RequestBody RealProductIdsParam realProductIdsParam);
 
+    /**
+     * @Description: 后台管理服务调用 - 商品列表的展示 满足分页和关键字搜索
+    **/
+    @PostMapping("product/search")
+    public R adminGetProductListBySearchOrPage(@RequestBody ProductSearchParam productSearchParam);
+
+    /**
+     * @Description: 后台服务调用 - 保存商品信息
+    **/
+    @PostMapping("product/admin/save")
+    R saveProductByAdmin(@RequestBody AdminSaveProductParam adminSaveProductParam);
+
+    /**
+     * @Description: 后台管理调用 - 删除商品信息
+    **/
+    @PostMapping("product/admin/remove")
+    R removeProductByAdmin(@RequestBody Integer productId);
+
+    /**
+     * @Description: 后台管理调用 - 修改商品信息
+    **/
+    @PostMapping("product/admin/update")
+    R updateProductByAdmin(@RequestBody Product product);
 }

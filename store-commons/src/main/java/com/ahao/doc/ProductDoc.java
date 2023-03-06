@@ -4,6 +4,8 @@ import com.ahao.pojo.Product;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @Description: 商品es实体类
  * @Author: ahao
@@ -12,7 +14,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ProductDoc extends Product {
+public class ProductDoc extends Product implements Serializable {
+
+    public static final Long SerialVersionUDI = 1L;
 
     /**
      * @Description: 商品标题+商品名称+商品描述

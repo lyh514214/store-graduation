@@ -1,8 +1,17 @@
 package com.ahao.admin.controller;
 
+import com.ahao.clients.CategoryClient;
+import com.ahao.pojo.Category;
+import com.ahao.utils.R;
 import lombok.extern.slf4j.Slf4j;
+import org.bouncycastle.math.raw.Mod;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Description: 视图跳转器
@@ -13,6 +22,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @Slf4j
 public class ViewController {
+
+    @Autowired
+    private CategoryClient categoryClient;
 
     /**
      * @Description: 跳转到 登录页 login
@@ -91,7 +103,9 @@ public class ViewController {
      * @Description: 商品编辑页面
     **/
     @GetMapping("/product/update/html")
-    public String productUpdateHtml(){
+    public String productUpdateHtml(Model model){
+        List<Category> categoryList = categoryClient.clistByAdmin();
+        model.addAttribute("clist",categoryList);
         log.info("跳转到商品编辑页面！");
         return "product/edit";
     }
@@ -100,7 +114,9 @@ public class ViewController {
      * @Description: 商品添加页面
     **/
     @GetMapping("/product/save/html")
-    public String productSaveHtml(){
+    public String productSaveHtml(Model model){
+        List<Category> categoryList = categoryClient.clistByAdmin();
+        model.addAttribute("clist",categoryList);
         log.info("跳转到商品添加页面！");
         return "product/add";
     }
@@ -123,23 +139,6 @@ public class ViewController {
         return "category/add";
     }
 
-    /**
-     * @Description: 订单修改页面
-    **/
-    @GetMapping("/order/update/html")
-    public String orderUpdateHtml(){
-        log.info("跳转到订单修改页面！");
-        return "order/edit";
-    }
-
-    /**
-     * @Description: 订单添加页面
-    **/
-    @GetMapping("/order/save/html")
-    public String orderSaveHtml(){
-        log.info("跳转到订单添加页面！");
-        return "order/add";
-    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.ahao.category.controller;
 
 import com.ahao.category.service.CategoryService;
+import com.ahao.param.PageParam;
 import com.ahao.param.ProductHotParam;
 import com.ahao.pojo.Category;
 import com.ahao.utils.R;
@@ -56,6 +57,14 @@ public class CategoryController {
             return R.fail(null);
         }
         return R.ok(categoryList);
+    }
+
+    /**
+     * @Description: 后台管理模块 --》 调用获取商品列表
+    **/
+    @GetMapping("clistByAdmin")
+    public List<Category> listByAdmin(){
+        return categoryService.list();
     }
 
 
